@@ -274,13 +274,19 @@ miscSection:addButton("Rejoin Server", function()
     TeleportService:Teleport(PlaceId, LocalPlayer)
 end)
 
-miscSection:addButton("Teleport Katana", function()
+miscSection:addButton("Get Katana", function()
     if workspace:FindFirstChild("Katana") ~= nil then
     workspace:FindFirstChild("Katana").Main.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-2)
     end
 end)
 
-miscSection:addButton("Teleport Crowbar", function()
+miscSection:addButton("Get Chainsaw", function()
+    if workspace:FindFirstChild("Chainsaw") ~= nil then
+    workspace:FindFirstChild("Chainsaw").Main.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-2)
+    end
+end)
+
+miscSection:addButton("Get Crowbar", function()
     for i, v in pairs(workspace.Corpses:GetDescendants()) do
         if v.Name == "Crowbar" and v ~= nil then
             v:PivotTo(LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-2))
