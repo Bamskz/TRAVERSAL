@@ -3,21 +3,15 @@ local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/
 
 local t = tick()
 
-Notification:Notify(
-{Title = "Loading UI", Description = "Please wait..."},
-{OutlineColor = Color3.fromRGB(110, 255, 124),Time = 5, Type = "default"},
-{Image = "http://www.roblox.com/asset/?id=", ImageColor = Color3.fromRGB(255, 84, 84)}
-)
-
-task.wait(math.random(5,8))
 repeat task.wait() until workspace.Enemies:FindFirstChild("Enemy") or tick() - t >= 10
 
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/zMaaaaaaark/UI-/main/uilib2.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ditchmethis/UI-/main/uilib2.lua"))()
 local venyx = library.new("TRAVERSAL by myzsyn", 5013109572)
 
 -- // vars
 local LocalPlayer = game.Players.LocalPlayer
 local TeleportService = game:GetService("TeleportService")
+local RunService = game:GetService("RunService")
 local HttpService = game:service('HttpService')
 local PlaceId = game.PlaceId
 local animationInfo = {}
@@ -63,7 +57,7 @@ local apArgsOff = {
 
 local Settings = {
     -- // auto-parry
-    apdist = 10,
+    apdist = 1,
     apenabled = false,
 
     -- // weapon manipulation
@@ -73,8 +67,37 @@ local Settings = {
     infdmg = false,
 
     -- // npcs
-    espEnabled = false
+    espEnabled = false,
 }
+
+--// config
+
+makefolder("Traversal")
+
+function SaveSettings()
+	local JSON
+	JSON = HttpService:JSONEncode(Settings)
+	if not isfile('Traversal\\TraversalConfig.cfg') then
+		writefile('Traversal\\TraversalConfig.cfg', JSON)
+    else
+        delfile('Traversal\\TraversalConfig.cfg')
+        writefile('Traversal\\TraversalConfig.cfg', JSON) -- rewrite config
+	end
+end
+
+function LoadSettings()
+	if isfile('Traversal\\TraversalConfig.cfg') then
+		Settings = HttpService:JSONDecode(readfile('Traversal\\TraversalConfig.cfg'))
+	end
+end
+
+function ResetSettings()
+	if isfile('Traversal\\TraversalConfig.cfg') then
+		delfile('Traversal\\TraversalConfig.cfg')
+	end
+end
+
+LoadSettings() -- init config
 
 -- // functions
 
@@ -133,7 +156,7 @@ function ESP(v)
     if not v:FindFirstChild("Highlight") and v ~= nil then
         local H = Instance.new("Highlight", v)
         H.FillTransparency = 1
-        H.OutlineColor = Color3.fromRGB(255, 0, 0)
+        H.OutlineColor = Color3.fromRGB(255,0,0)
     end
 end
 
@@ -155,61 +178,32 @@ workspace.Enemies.ChildAdded:Connect(function(npc)
     end
 end)
 
-LocalPlayer.Character.ChildAdded:Connect(function(melee)
-    if melee:IsA("Model") then
-        if Settings.swingspeedEnabled then
-            for i, v in pairs(LocalPlayer.Character:GetChildren()) do
-                if v:IsA("Model") then
-                    v:SetAttribute("AnimationSpeed", Settings.swingspeed)
-                end
-            end
-        if Settings.infdmg then
-            for i, v in pairs(LocalPlayer.Character:GetChildren()) do
-                if v:IsA("Model") then
-                    v:SetAttribute("Damage", math.huge)
-                    v:SetAttribute("Heavy", true)
-                end
-            end
-        if Settings.noweapondrain then
-            for i, v in pairs(LocalPlayer.Character:GetChildren()) do
-                if v:IsA("Model") then
-                    v:SetAttribute("StaminaCost", 0)
-                end 
+local loop
+
+loop = RunService.Stepped:Connect(function()
+    if Settings.swingspeedEnabled then
+        for i, v in pairs(LocalPlayer.Character:GetChildren()) do
+            if v:IsA("Model") then
+                v:SetAttribute("AnimationSpeed", Settings.swingspeed)
             end
         end
+    if Settings.infdmg then
+        for i, v in pairs(LocalPlayer.Character:GetChildren()) do
+            if v:IsA("Model") then
+                v:SetAttribute("Damage", math.huge)
+                v:SetAttribute("Heavy", true)
+            end
+        end
+    if Settings.noweapondrain then
+        for i, v in pairs(LocalPlayer.Character:GetChildren()) do
+            if v:IsA("Model") then
+                v:SetAttribute("StaminaCost", 0)
+            end 
+        end
     end
-    end
-    end
+end
+end
 end)
-
---// config
-
-makefolder("Traversal")
-
-function SaveSettings()
-	local JSON
-	JSON = HttpService:JSONEncode(Settings)
-	if not isfile('Traversal\\TraversalConfig.cfg') then
-		writefile('Traversal\\TraversalConfig.cfg', JSON)
-    else
-        delfile('Traversal\\TraversalConfig.cfg')
-        writefile('Traversal\\TraversalConfig.cfg', JSON) -- rewrite config
-	end
-end
-
-function LoadSettings()
-	if isfile('Traversal\\TraversalConfig.cfg') then
-		Settings = HttpService:JSONDecode(readfile('Traversal\\TraversalConfig.cfg'))
-	end
-end
-
-function ResetSettings()
-	if isfile('Traversal\\TraversalConfig.cfg') then
-		delfile('Traversal\\TraversalConfig.cfg')
-	end
-end
-
-LoadSettings() -- init config
 
 -- // init
 
@@ -222,7 +216,7 @@ apSection:addToggle("Auto-Parry", Settings.apenabled, function(bool)
     Settings.apenabled = bool
 end)
 
-apSection:addSlider("Auto-Parry Range", Settings.apdist, 1, 12, function(value)
+apSection:addSlider("Auto-Parry Range", Settings.apdist, 1, 20, function(value)
     Settings.apdist = value
 end)
 
@@ -263,7 +257,9 @@ NPCSection:addToggle("ESP // Highlight NPCs", Settings.espEnabled, function(bool
         end
     else
         for i, v in pairs(workspace.Enemies:GetChildren()) do
-            v.Highlight:Destroy()
+            if v:FindFirstChild("Hightlight") then
+                v:Destroy()
+            end
         end
     end
 end)
@@ -381,4 +377,9 @@ configSection:addButton("Reset Settings", function()
     end
 end)
 
-venyx:SelectPage(venyx.pages[1], true)
+venyx:SelectPage(venyx.pages[1], true) -- init ui page
+Notification:Notify(
+{Title = "UI Loaded", Description = "UI is completely loaded and ready to use."},
+{OutlineColor = Color3.fromRGB(110, 255, 124),Time = 5, Type = "default"},
+{Image = "http://www.roblox.com/asset/?id=", ImageColor = Color3.fromRGB(255, 84, 84)}
+)
