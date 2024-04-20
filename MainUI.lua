@@ -319,12 +319,6 @@ configSection:addButton("Save Settings", function()
             {Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(255, 84, 84), Callback = function(State) 
 
                 if State == true then
-                    Notification:Notify(
-                        {Title = "Rejoining...", DescriptionD = "Please wait for a little while, this won't take long while saving the configurations."},
-                        {OutlineColor = Color3.fromRGB(110, 255, 124),Time = 5, Type = "default"},
-                        {Image = "http://www.roblox.com/asset/?id=", ImageColor = Color3.fromRGB(0, 255, 60)}
-                    )
-                    task.wait(math.random(5,8))
                     TeleportService:Teleport(PlaceId, LocalPlayer)
                 elseif State == false then
                     Notification:Notify(
@@ -366,12 +360,6 @@ configSection:addButton("Reset Settings", function()
             {Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(255, 84, 84), Callback = function(State) 
 
                 if State == true then
-                    Notification:Notify(
-                        {Title = "Rejoining...", Description = "Please wait for a little while, this won't take long while saving the configurations."},
-                        {OutlineColor = Color3.fromRGB(110, 255, 124),Time = 5, Type = "default"},
-                        {Image = "http://www.roblox.com/asset/?id=", ImageColor = Color3.fromRGB(0, 255, 60)}
-                    )
-                    task.wait(math.random(5,8))
                     TeleportService:Teleport(PlaceId, LocalPlayer)
                 elseif State == false then
                     Notification:Notify(
