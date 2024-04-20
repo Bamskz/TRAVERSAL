@@ -94,12 +94,12 @@ function parry(v)
     if v:FindFirstChild("Knife") and not table.find(WeaponNames, v:FindFirstChild(WeaponNames)) then
         task.wait(.2)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(apArgsOn))
-        task.wait(.7)
+        task.wait(1)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(apArgsOff))
     else
         task.wait(.02)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(apArgsOn))
-        task.wait(.3)
+        task.wait(.5)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(apArgsOff))
     end
 end
