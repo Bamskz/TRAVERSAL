@@ -1,5 +1,3 @@
--- made with love by myzsyn
-
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
 
@@ -61,15 +59,6 @@ local apArgsOff = {
             [2] = "False"
         }
     }
-}
-
-local themes = {
-    Background = Color3.fromRGB(24, 24, 24),
-    Glow = Color3.fromRGB(0, 0, 0),
-    Accent = Color3.fromRGB(10, 10, 10),
-    LightContrast = Color3.fromRGB(20, 20, 20),
-    DarkContrast = Color3.fromRGB(14, 14, 14),  
-    TextColor = Color3.fromRGB(255, 255, 255)
 }
 
 local Settings = {
@@ -141,24 +130,25 @@ function npcAdded(v)
 end
 
 function ESP(v)
-    if v:FindFirstChild("Highlight") == nil then
+    if not v:FindFirstChild("Highlight") and v ~= nil then
         local H = Instance.new("Highlight", v)
         H.FillTransparency = 1
         H.OutlineColor = Color3.fromRGB(255, 0, 0)
-    else
-        -- nothing ;3
     end
 end
 
 for i, v in pairs(workspace.Enemies:GetChildren()) do
-    npcAdded(v) -- init current npc that is already been there
+    npcAdded(v)
+    if Settings.espEnabled and v ~= nil then
+        ESP(v)
+    end
 end
 
 workspace.Enemies.ChildAdded:Connect(function(npc)
     if npc.Name == "Enemy" then
        for i, v in pairs(workspace.Enemies:GetChildren()) do
             npcAdded(v)
-            if Settings.espEnabled == true then
+            if Settings.espEnabled and v ~= nil then
                 ESP(v)
             end
         end
@@ -267,7 +257,7 @@ end)
 
 NPCSection:addToggle("ESP // Highlight NPCs", Settings.espEnabled, function(bool)
     Settings.espEnabled = bool
-    if bool then
+    if Settings.espEnabled then
         for i, v in pairs(workspace.Enemies:GetChildren()) do
             ESP(v)
         end
