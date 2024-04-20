@@ -21,7 +21,6 @@ local venyx = library.new("TRAVERSAL by myzsyn", 5013109572)
 local LocalPlayer = game.Players.LocalPlayer
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:service('HttpService')
-local JobId = game.JobId
 local PlaceId = game.PlaceId
 local animationInfo = {}
 
