@@ -124,9 +124,9 @@ function parry(v)
         -- knif
     else
         -- not knif
-        task.wait(.2)
+        task.wait(.15)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(apArgsOn))
-        task.wait(.5)
+        task.wait(.7)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(apArgsOff))
     end
 end
