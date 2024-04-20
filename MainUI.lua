@@ -1,5 +1,18 @@
+-- made with love by myzsyn
+
 local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
+
+local t = tick()
+
+Notification:Notify(
+{Title = "Loading UI", Description = "Please wait..."},
+{OutlineColor = Color3.fromRGB(110, 255, 124),Time = 5, Type = "default"},
+{Image = "http://www.roblox.com/asset/?id=", ImageColor = Color3.fromRGB(255, 84, 84)}
+)
+
+task.wait(math.random(5,8))
+repeat task.wait() until workspace.Enemies:FindFirstChild("Enemy") or tick() - t >= 10
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/zMaaaaaaark/UI-/main/uilib2.lua"))()
 local venyx = library.new("TRAVERSAL by myzsyn", 5013109572)
@@ -17,7 +30,7 @@ local AnimNames = {
     'AttackTwo',
     'AttackThree',
     'AttackFour',
-    'Untitled',
+    'Untitled', 
 }
 
 local WeaponNames = {
